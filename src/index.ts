@@ -48,11 +48,6 @@ const runCallback = (callback: Callback) => {
 };
 
 /**
- * to string method
- */
-export const toString = Object.prototype.toString;
-
-/**
  * returns boolean indicating if library globals have been installed
  */
 export const installed = (): boolean => {

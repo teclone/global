@@ -111,7 +111,7 @@ export const uninstall = () => {
 export const isBrowser = () => installed();
 
 /**
- * detects if we are running in a service worker
+ * detects if we are running in a web service worker
  */
 export const isServiceWorker = () => typeof self !== 'undefined';
 

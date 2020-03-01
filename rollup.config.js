@@ -1,4 +1,4 @@
-const { config } = require('rollup-all');
+const { config } = require('@teclone/rollup-all');
 module.exports = config({
-  config: {}
+  config: {},
 });

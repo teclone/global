@@ -6,4 +6,10 @@ describe('Globals', function() {
       expect(Globals.installed()).toBe(true);
     });
   });
+
+  describe('isBrowser()', function() {
+    it(`should return true if we are running in a browser`, function() {
+      expect(Globals.isBrowser()).toBe(true);
+    });
+  });
 });

@@ -12,7 +12,8 @@
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
     "watch-test": "BABEL_ENV=test jest --watch",
-    "build": "rimraf build && tsc && rollup-all",
+    "typings": "tsc --p tsconfig.build.json",
+    "build": "rimraf build && yarn typings --declarationDir ./build && yarn typings --declarationDir ./build/esm && rollup-all",
     "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
@@ -38,7 +39,7 @@
     "jest": "24.3.1",
     "rimraf": "2.6.3",
     "rollup-all": "1.10.6",
-    "semantic-release": "^15.13.24",
+    "semantic-release": "^17.0.4",
     "semantic-release-cli": "5.2.1",
     "tslint": "5.12.0",
     "typescript": "3.7.2"

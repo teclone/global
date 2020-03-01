@@ -12,4 +12,10 @@ describe('Globals', function() {
       expect(Globals.isBrowser()).toBe(true);
     });
   });
+
+  describe('isServiceWorker()', function() {
+    it(`should return true if we are running in a web worker`, function() {
+      expect(Globals.isServiceWorker()).toBe(true);
+    });
+  });
 });

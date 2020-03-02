@@ -3,11 +3,16 @@ export interface Callback {
   [propName: string]: any;
 }
 
+interface CallbackEntry {
+  persist: boolean;
+  callback: Callback;
+}
+
 export type Env = 'dev' | 'prod';
 
-let installCallbacks: Callback[] = [];
+let installCallbacks: CallbackEntry[] = [];
 
-let uninstallCallbacks: Callback[] = [];
+let uninstallCallbacks: CallbackEntry[] = [];
 
 /**
  * indicates the installation status
@@ -57,23 +62,31 @@ export const installed = (): boolean => {
 /**
  * registers on install callback.
  * @param callback
+ * @param persist - boolean indicating if the callback should be persisted
+ * and ran across multiple install events, defaults to true
  */
-export const onInstall = (callback: Callback) => {
+export const onInstall = (callback: Callback, persist: boolean = true) => {
   if (installed()) {
     runCallback(callback);
-  } else {
-    installCallbacks.push(callback);
+  }
+
+  if (!installed() || persist) {
+    installCallbacks.push({ callback, persist });
   }
 };
 
 /**
  * registers on uninstall callback
+ * @param persist - boolean indicating if the callback should be persisted
+ * and ran across multiple install events, defaults to true
  */
-export const onUninstall = (callback: Callback) => {
+export const onUninstall = (callback: Callback, persist: boolean = true) => {
   if (status === 'uninstalled') {
     runCallback(callback);
-  } else {
-    uninstallCallbacks.push(callback);
+  }
+
+  if (status !== 'uninstalled' || persist) {
+    uninstallCallbacks.push({ callback, persist });
   }
 };
 
@@ -86,8 +99,8 @@ export const install = (hostParam: Window & typeof globalThis, rootParam: Docume
     root = rootParam;
 
     status = 'installed';
-    installCallbacks.forEach(runCallback);
-    installCallbacks = [];
+    installCallbacks.forEach(current => runCallback(current.callback));
+    installCallbacks = installCallbacks.filter(current => !!current.persist);
   }
   return true;
 };
@@ -99,8 +112,8 @@ export const uninstall = () => {
   if (status === 'installed') {
     host = root = null;
     status = 'uninstalled';
-    uninstallCallbacks.forEach(runCallback);
-    uninstallCallbacks = [];
+    uninstallCallbacks.forEach(current => runCallback(current.callback));
+    uninstallCallbacks = uninstallCallbacks.filter(current => !!current.persist);
   }
   return true;
 };
@@ -119,6 +132,12 @@ export const isServiceWorker = () => typeof self !== 'undefined';
  * detects if we are running in a node js env
  */
 export const isNode = () => typeof process !== 'undefined';
+
+/**
+ * detects if we are running in react native env
+ */
+export const isReactNative = () =>
+  typeof process == 'undefined' && typeof global !== 'undefined';
 
 /**
  * install if window is defined

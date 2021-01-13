@@ -5,6 +5,7 @@
   "main": "build/index",
   "module": "build/esm/index",
   "typings": "build/index",
+  "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
@@ -31,9 +32,10 @@
     "@babel/plugin-proposal-optional-chaining": "7.6.0",
     "@babel/preset-env": "7.4.0",
     "@babel/preset-typescript": "7.3.3",
-    "@teclone/rollup-all": "1.10.8",
+    "@teclone/rollup-all": "^1.12.11",
+    "@teclone/utils": "^2.22.1",
     "@types/jest": "24.0.11",
-    "@types/node": "13.7.7",
+    "@types/node": "^14.14.20",
     "babel-jest": "24.9.0",
     "commitizen": "3.0.7",
     "coveralls": "3.0.3",
